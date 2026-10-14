@@ -1,7 +1,7 @@
 import 'react-native-url-polyfill/auto';
 import 'regenerator-runtime/runtime';
 
-import { fetchOneEntry, type BuilderContent } from '@builder.io/sdk-react-native';
+import { fetchEntries, fetchOneEntry, type BuilderContent } from '@builder.io/sdk-react-native';
 
 // Builder public API key: safe to commit (it only allows reading published content and is
 // shipped in every client bundle anyway). Override with EXPO_PUBLIC_BUILDER_API_KEY if needed.
@@ -34,4 +34,25 @@ export async function fetchPage(urlPath: string) {
     userAttributes: { urlPath },
   });
   return normalizePixelBlocks(entry);
+}
+
+export interface NavPage {
+  title: string;
+  url: string;
+}
+
+// Published `page` entries, used to build the header menu so pages created in Builder
+// show up without a code change.
+export async function fetchNavPages(): Promise<NavPage[]> {
+  const entries = await fetchEntries({
+    model: BUILDER_MODEL,
+    apiKey: BUILDER_API_KEY,
+    limit: 50,
+    fields: 'name,data.url,data.title',
+    options: { noTargeting: true },
+  });
+  return (entries ?? [])
+    .map((e: any) => ({ title: e.data?.title || e.name, url: e.data?.url as string }))
+    .filter((p) => typeof p.url === 'string' && p.url.startsWith('/'))
+    .sort((a, b) => a.url.length - b.url.length);
 }

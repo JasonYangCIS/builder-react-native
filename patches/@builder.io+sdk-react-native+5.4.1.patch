@@ -1,0 +1,105 @@
+diff --git a/node_modules/@builder.io/sdk-react-native/lib/browser/commonjs/components/blocks/blocks.js b/node_modules/@builder.io/sdk-react-native/lib/browser/commonjs/components/blocks/blocks.js
+index 17a8643..32df055 100644
+--- a/node_modules/@builder.io/sdk-react-native/lib/browser/commonjs/components/blocks/blocks.js
++++ b/node_modules/@builder.io/sdk-react-native/lib/browser/commonjs/components/blocks/blocks.js
+@@ -7,6 +7,8 @@ exports.default = void 0;
+ var _react = _interopRequireWildcard(require("react"));
+ var React = _react;
+ var _reactNative = require("react-native");
++// Patched: non-virtualized list so blocks can live inside a parent ScrollView.
++const PatchedList = ({ data, renderItem, keyExtractor }) => React.createElement(_reactNative.View, null, data.map((item, index) => React.createElement(React.Fragment, { key: keyExtractor(item, index) }, renderItem({ item, index }))));
+ var _builder = _interopRequireDefault(require("../../context/builder.context"));
+ var _components = _interopRequireDefault(require("../../context/components.context"));
+ var _block = _interopRequireDefault(require("../block/block"));
+@@ -37,7 +39,7 @@ function Blocks(props) {
+     BlocksWrapperProps: props.BlocksWrapperProps || ((_props$context = props.context) === null || _props$context === void 0 ? void 0 : _props$context.BlocksWrapperProps) || (builderContext === null || builderContext === void 0 ? void 0 : builderContext.BlocksWrapperProps),
+     classNameProp: props.className,
+     BlocksWrapper: ((_props$context2 = props.context) === null || _props$context2 === void 0 ? void 0 : _props$context2.BlocksWrapper) || (builderContext === null || builderContext === void 0 ? void 0 : builderContext.BlocksWrapper)
+-  }, props.children, props.blocks ? /*#__PURE__*/React.createElement(_reactNative.FlatList, {
++  }, props.children, props.blocks ? /*#__PURE__*/React.createElement(PatchedList, {
+     data: props.blocks,
+     renderItem: renderItem,
+     keyExtractor: keyExtractor,
+diff --git a/node_modules/@builder.io/sdk-react-native/lib/browser/module/components/blocks/blocks.js b/node_modules/@builder.io/sdk-react-native/lib/browser/module/components/blocks/blocks.js
+index b34123a..46ff003 100644
+--- a/node_modules/@builder.io/sdk-react-native/lib/browser/module/components/blocks/blocks.js
++++ b/node_modules/@builder.io/sdk-react-native/lib/browser/module/components/blocks/blocks.js
+@@ -1,5 +1,7 @@
+ import * as React from "react";
+-import { FlatList } from "react-native";
++import { View } from "react-native";
++// Patched: non-virtualized list so blocks can live inside a parent ScrollView.
++const FlatList = ({ data, renderItem, keyExtractor }) => React.createElement(View, null, data.map((item, index) => React.createElement(React.Fragment, { key: keyExtractor(item, index) }, renderItem({ item, index }))));
+ import { useContext } from "react";
+ import BuilderContext from "../../context/builder.context";
+ import ComponentsContext from "../../context/components.context";
+diff --git a/node_modules/@builder.io/sdk-react-native/lib/edge/commonjs/components/blocks/blocks.js b/node_modules/@builder.io/sdk-react-native/lib/edge/commonjs/components/blocks/blocks.js
+index 17a8643..32df055 100644
+--- a/node_modules/@builder.io/sdk-react-native/lib/edge/commonjs/components/blocks/blocks.js
++++ b/node_modules/@builder.io/sdk-react-native/lib/edge/commonjs/components/blocks/blocks.js
+@@ -7,6 +7,8 @@ exports.default = void 0;
+ var _react = _interopRequireWildcard(require("react"));
+ var React = _react;
+ var _reactNative = require("react-native");
++// Patched: non-virtualized list so blocks can live inside a parent ScrollView.
++const PatchedList = ({ data, renderItem, keyExtractor }) => React.createElement(_reactNative.View, null, data.map((item, index) => React.createElement(React.Fragment, { key: keyExtractor(item, index) }, renderItem({ item, index }))));
+ var _builder = _interopRequireDefault(require("../../context/builder.context"));
+ var _components = _interopRequireDefault(require("../../context/components.context"));
+ var _block = _interopRequireDefault(require("../block/block"));
+@@ -37,7 +39,7 @@ function Blocks(props) {
+     BlocksWrapperProps: props.BlocksWrapperProps || ((_props$context = props.context) === null || _props$context === void 0 ? void 0 : _props$context.BlocksWrapperProps) || (builderContext === null || builderContext === void 0 ? void 0 : builderContext.BlocksWrapperProps),
+     classNameProp: props.className,
+     BlocksWrapper: ((_props$context2 = props.context) === null || _props$context2 === void 0 ? void 0 : _props$context2.BlocksWrapper) || (builderContext === null || builderContext === void 0 ? void 0 : builderContext.BlocksWrapper)
+-  }, props.children, props.blocks ? /*#__PURE__*/React.createElement(_reactNative.FlatList, {
++  }, props.children, props.blocks ? /*#__PURE__*/React.createElement(PatchedList, {
+     data: props.blocks,
+     renderItem: renderItem,
+     keyExtractor: keyExtractor,
+diff --git a/node_modules/@builder.io/sdk-react-native/lib/edge/module/components/blocks/blocks.js b/node_modules/@builder.io/sdk-react-native/lib/edge/module/components/blocks/blocks.js
+index b34123a..46ff003 100644
+--- a/node_modules/@builder.io/sdk-react-native/lib/edge/module/components/blocks/blocks.js
++++ b/node_modules/@builder.io/sdk-react-native/lib/edge/module/components/blocks/blocks.js
+@@ -1,5 +1,7 @@
+ import * as React from "react";
+-import { FlatList } from "react-native";
++import { View } from "react-native";
++// Patched: non-virtualized list so blocks can live inside a parent ScrollView.
++const FlatList = ({ data, renderItem, keyExtractor }) => React.createElement(View, null, data.map((item, index) => React.createElement(React.Fragment, { key: keyExtractor(item, index) }, renderItem({ item, index }))));
+ import { useContext } from "react";
+ import BuilderContext from "../../context/builder.context";
+ import ComponentsContext from "../../context/components.context";
+diff --git a/node_modules/@builder.io/sdk-react-native/lib/node/commonjs/components/blocks/blocks.js b/node_modules/@builder.io/sdk-react-native/lib/node/commonjs/components/blocks/blocks.js
+index 17a8643..32df055 100644
+--- a/node_modules/@builder.io/sdk-react-native/lib/node/commonjs/components/blocks/blocks.js
++++ b/node_modules/@builder.io/sdk-react-native/lib/node/commonjs/components/blocks/blocks.js
+@@ -7,6 +7,8 @@ exports.default = void 0;
+ var _react = _interopRequireWildcard(require("react"));
+ var React = _react;
+ var _reactNative = require("react-native");
++// Patched: non-virtualized list so blocks can live inside a parent ScrollView.
++const PatchedList = ({ data, renderItem, keyExtractor }) => React.createElement(_reactNative.View, null, data.map((item, index) => React.createElement(React.Fragment, { key: keyExtractor(item, index) }, renderItem({ item, index }))));
+ var _builder = _interopRequireDefault(require("../../context/builder.context"));
+ var _components = _interopRequireDefault(require("../../context/components.context"));
+ var _block = _interopRequireDefault(require("../block/block"));
+@@ -37,7 +39,7 @@ function Blocks(props) {
+     BlocksWrapperProps: props.BlocksWrapperProps || ((_props$context = props.context) === null || _props$context === void 0 ? void 0 : _props$context.BlocksWrapperProps) || (builderContext === null || builderContext === void 0 ? void 0 : builderContext.BlocksWrapperProps),
+     classNameProp: props.className,
+     BlocksWrapper: ((_props$context2 = props.context) === null || _props$context2 === void 0 ? void 0 : _props$context2.BlocksWrapper) || (builderContext === null || builderContext === void 0 ? void 0 : builderContext.BlocksWrapper)
+-  }, props.children, props.blocks ? /*#__PURE__*/React.createElement(_reactNative.FlatList, {
++  }, props.children, props.blocks ? /*#__PURE__*/React.createElement(PatchedList, {
+     data: props.blocks,
+     renderItem: renderItem,
+     keyExtractor: keyExtractor,
+diff --git a/node_modules/@builder.io/sdk-react-native/lib/node/module/components/blocks/blocks.js b/node_modules/@builder.io/sdk-react-native/lib/node/module/components/blocks/blocks.js
+index b34123a..46ff003 100644
+--- a/node_modules/@builder.io/sdk-react-native/lib/node/module/components/blocks/blocks.js
++++ b/node_modules/@builder.io/sdk-react-native/lib/node/module/components/blocks/blocks.js
+@@ -1,5 +1,7 @@
+ import * as React from "react";
+-import { FlatList } from "react-native";
++import { View } from "react-native";
++// Patched: non-virtualized list so blocks can live inside a parent ScrollView.
++const FlatList = ({ data, renderItem, keyExtractor }) => React.createElement(View, null, data.map((item, index) => React.createElement(React.Fragment, { key: keyExtractor(item, index) }, renderItem({ item, index }))));
+ import { useContext } from "react";
+ import BuilderContext from "../../context/builder.context";
+ import ComponentsContext from "../../context/components.context";
